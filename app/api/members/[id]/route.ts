@@ -27,14 +27,16 @@ export async function PUT(request: Request, context: { params: { id: string } })
       return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
     }
     // Get current user ID from JWT
-    const cookieStore = cookies();
-    const token = (await cookieStore).get('token')?.value;
-    let userId = null;
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
+    let userId: number | null = null;
     if (token) {
       try {
         const secret = new TextEncoder().encode(JWT_SECRET);
         const { payload } = await jwtVerify(token, secret);
-        userId = payload.id;
+        if (payload && typeof payload.id === 'number') {
+          userId = payload.id;
+        }
       } catch {}
     }
     // Update member
@@ -49,7 +51,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
       },
     });
     // Create renewal record if userId is available
-    if (userId) {
+    if (typeof userId === 'number') {
       await prisma.renewal.create({
         data: {
           memberId: memberId,
