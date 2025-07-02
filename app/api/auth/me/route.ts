@@ -22,7 +22,11 @@ export async function GET() {
       return NextResponse.json({ error: 'Invalid token.' }, { status: 401 });
     }
     // Optionally fetch name from DB
-    const user = await prisma.user.findUnique({ where: { id: payload.id } });
+    const userId = typeof payload.id === 'number' ? payload.id : undefined;
+    if (!userId) {
+      return NextResponse.json({ error: 'Invalid token payload.' }, { status: 401 });
+    }
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       return NextResponse.json({ error: 'User not found.' }, { status: 404 });
     }

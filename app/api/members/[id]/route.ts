@@ -6,7 +6,7 @@ import { jwtVerify } from 'jose';
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 
-export async function DELETE(request: Request, context: { params: { id: string } }) {
+export async function DELETE(request: Request, context: any) {
   try {
     const { id } = context.params;
     const memberId = parseInt(id, 10);
@@ -17,7 +17,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request, context: { params: { id: string } }) {
+export async function PUT(request: Request, context: any) {
   try {
     const { id } = context.params;
     const memberId = parseInt(id, 10);
@@ -68,7 +68,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
   }
 }
 
-export async function GET(request: Request, context: { params: { id: string } }) {
+export async function GET(request: Request, context: any) {
   try {
     const { id } = context.params;
     const memberId = parseInt(id, 10);
