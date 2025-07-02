@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
 
 export async function DELETE(request: Request, context: { params: { id: string } }) {
   try {
-    const { id } = await context.params;
+    const { id } = context.params;
     const memberId = parseInt(id, 10);
     await prisma.member.delete({ where: { id: memberId } });
     return NextResponse.json({ success: true });
@@ -19,7 +19,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
 
 export async function PUT(request: Request, context: { params: { id: string } }) {
   try {
-    const { id } = await context.params;
+    const { id } = context.params;
     const memberId = parseInt(id, 10);
     const body = await request.json();
     const { name, phone, membershipStart, membershipEnd, amountPaid } = body;
@@ -68,7 +68,7 @@ export async function PUT(request: Request, context: { params: { id: string } })
 
 export async function GET(request: Request, context: { params: { id: string } }) {
   try {
-    const { id } = await context.params;
+    const { id } = context.params;
     const memberId = parseInt(id, 10);
     const member = await prisma.member.findUnique({
       where: { id: memberId },
